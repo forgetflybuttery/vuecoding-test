@@ -1,0 +1,27 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 522814725950.dkr.ecr.ap-northeast-1.amazonaws.com
+  build:
+    commands:
+      - echo `date`
+      - npm install
+      - npm run build 
+      - TAG=`date "+%Y-%m-%d"`
+      #DATE命令获取日期作为标签
+      - docker build -t 522814725950.dkr.ecr.ap-northeast-1.amazonaws.com/codeseries:latest ./ 
+      #build 镜像
+      - docker push 522814725950.dkr.ecr.ap-northeast-1.amazonaws.com/codeseries:latest
+      #推送镜像 
+  post_build:
+    commands:
+      - echo `date`
+      - printf '[{"name":"mynginx","imageUri":"%s"}]' 522814725950.dkr.ecr.ap-northeast-1.amazonaws.com/codeseries:latest > imagedefinitions.json
+      - cat imagedefinitions.json
+artifacts:
+  files:
+    - imagedefinitions.json
