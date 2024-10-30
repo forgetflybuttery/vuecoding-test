@@ -15,15 +15,15 @@ phases:
       - npm run build 
       - TAG=`date "+%Y-%m-%d"`
       # 使用 DATE 命令获取日期作为标签
-      - docker build -t 545009824269.dkr.ecr.ap-northeast-1.amazonaws.com/codeseries:latest ./ 
+      - docker build -t 545009824269.dkr.ecr.ap-northeast-1.amazonaws.com/ya-test-01:latest ./ 
       # 构建 Docker 镜像
-      - docker push 545009824269.dkr.ecr.ap-northeast-1.amazonaws.com/codeseries:latest
+      - docker push 545009824269.dkr.ecr.ap-northeast-1.amazonaws.com/ya-test-01:latest:latest
       # 推送 Docker 镜像
   post_build:
     commands:
       - echo "Starting post-build phase"
       - echo `date`
-      - printf '[{"name":"mynginx","imageUri":"%s"}]' 545009824269.dkr.ecr.ap-northeast-1.amazonaws.com/codeseries:latest > imagedefinitions.json
+      - printf '[{"name":"mynginx","imageUri":"%s"}]' 545009824269.dkr.ecr.ap-northeast-1.amazonaws.com/ya-test-01:latest:latest > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files:
